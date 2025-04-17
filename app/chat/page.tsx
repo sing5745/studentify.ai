@@ -77,64 +77,72 @@ export default function ChatPage() {
   };
 
   return (
-    <div className="container mx-auto px-4 py-8 max-w-4xl">
-      <Card className="h-[80vh] flex flex-col">
-        <ScrollArea className="flex-1 p-4" ref={scrollAreaRef}>
-          <div className="space-y-4">
-            {messages.map((message, index) => (
-              <div
-                key={index}
-                className={`flex gap-3 ${
-                  message.role === "user" ? "justify-end" : "justify-start"
-                }`}
-              >
-                {message.role === "assistant" && (
-                  <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center">
-                    <Bot className="h-5 w-5 text-primary-foreground" />
-                  </div>
-                )}
+    <div className="flex flex-col min-h-[100dvh] w-full">
+      <div className="flex-1 container mx-auto px-2 sm:px-4 py-4 max-w-4xl">
+        <Card className="h-full flex flex-col">
+          <ScrollArea className="flex-1 p-2 sm:p-4" ref={scrollAreaRef}>
+            <div className="space-y-4">
+              {messages.map((message, index) => (
                 <div
-                  className={`rounded-lg p-4 max-w-[80%] ${
-                    message.role === "user"
-                      ? "bg-primary text-primary-foreground"
-                      : "bg-muted"
+                  key={index}
+                  className={`flex gap-2 sm:gap-3 ${
+                    message.role === "user" ? "justify-end" : "justify-start"
                   }`}
                 >
-                  {message.content}
-                </div>
-                {message.role === "user" && (
-                  <div className="w-8 h-8 rounded-full bg-secondary flex items-center justify-center">
-                    <User className="h-5 w-5" />
+                  {message.role === "assistant" && (
+                    <div className="w-6 h-6 sm:w-8 sm:h-8 rounded-full bg-primary flex items-center justify-center shrink-0">
+                      <Bot className="h-4 w-4 sm:h-5 sm:w-5 text-primary-foreground" />
+                    </div>
+                  )}
+                  <div
+                    className={`rounded-lg p-3 sm:p-4 max-w-[85%] sm:max-w-[80%] text-sm sm:text-base ${
+                      message.role === "user"
+                        ? "bg-primary text-primary-foreground"
+                        : "bg-muted"
+                    }`}
+                  >
+                    {message.content}
                   </div>
-                )}
-              </div>
-            ))}
-            {isLoading && (
-              <div className="flex gap-3 justify-start">
-                <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center">
-                  <Bot className="h-5 w-5 text-primary-foreground animate-pulse" />
+                  {message.role === "user" && (
+                    <div className="w-6 h-6 sm:w-8 sm:h-8 rounded-full bg-secondary flex items-center justify-center shrink-0">
+                      <User className="h-4 w-4 sm:h-5 sm:w-5" />
+                    </div>
+                  )}
                 </div>
-                <div className="rounded-lg p-4 bg-muted">
-                  Thinking...
+              ))}
+              {isLoading && (
+                <div className="flex gap-2 sm:gap-3 justify-start">
+                  <div className="w-6 h-6 sm:w-8 sm:h-8 rounded-full bg-primary flex items-center justify-center">
+                    <Bot className="h-4 w-4 sm:h-5 sm:w-5 text-primary-foreground animate-pulse" />
+                  </div>
+                  <div className="rounded-lg p-3 sm:p-4 bg-muted text-sm sm:text-base">
+                    Thinking...
+                  </div>
                 </div>
-              </div>
-            )}
+              )}
+            </div>
+          </ScrollArea>
+          <div className="p-2 sm:p-4 border-t">
+            <form onSubmit={handleSubmit} className="flex gap-2">
+              <Input
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                placeholder="Type your message..."
+                disabled={isLoading}
+                className="text-sm sm:text-base"
+              />
+              <Button 
+                type="submit" 
+                disabled={isLoading}
+                size="icon"
+                className="shrink-0"
+              >
+                <Send className="h-4 w-4" />
+              </Button>
+            </form>
           </div>
-        </ScrollArea>
-        <form onSubmit={handleSubmit} className="p-4 border-t">
-          <div className="flex gap-2">
-            <Input
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              placeholder="Type your message..."
-              disabled={isLoading}
-            />
-            <Button type="submit" disabled={isLoading}>
-              <Send className="h-4 w-4" />
-            </Button>
-          </div>
-        </form>
-      </Card>
+        </Card>
+      </div>
     </div>
   );
 }
